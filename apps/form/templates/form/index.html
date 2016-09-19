@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Formspring</title>
+	{% load staticfiles %}
+	<link rel="stylesheet" href="{% static 'form/css/index.css' %}" >
+</head>
+<body>
+	<div id= "container">
+	<h1>Share a Secret</h1>
+	<div class="box">
+		<form action="/process" method="POST">
+		{% csrf_token %}
+			<p>
+				<input type="text" name="secret" placeholder="Shhhhhhh">
+			</p>
+			<button type="submit">Submit</button>
+		</form>
+	</div>
+	<h1>Keep it locked.</h1>
+    {% for i in spring %}
+    <div class="box">
+    	<p>
+    		<b>{{i.secret}}</b>
+		</p>
+		<form action="{{i.id}}/like" method="POST">
+		{% csrf_token %}
+			<button type="submit" name ='action' value="like">Like</button>
+			<div><h2>{{request.session.like}}</h2></div>
+
+		</form>
+
+		<form action="{{i.id}}/remove" method="POST">
+		{% csrf_token %}
+			<button type="submit">Remove</button>
+		</form>
+	</div>
+    {% endfor %}
+    </div>
+</body>
+</html>
